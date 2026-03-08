@@ -1,0 +1,82 @@
+<!-- <p>courses works!</p> -->
+<h6 class=>selected Category ID:{{selectedCategory}}</h6>
+<!-- <div class="mb-3 text-center"></div>
+<label for="" class="form-label">categories</label>
+<select class="form-select form-select-lg w-50 m-auto" name="" id="" [(ngModel)]="selectedCategory">
+    <option [value]="0">All</option>
+    @for(cat of categories;track cat.id){
+    <option [value]="cat.id">{{cat.name}}</option>}
+</select> -->
+<div class="container mt-5">
+  <div class="text-center mb-4">
+    <h2 class="fw-bold">Available Courses</h2>
+  </div>
+
+  <div class="d-flex justify-content-center mb-4">
+    <select class="form-select w-25" [(ngModel)]="selectedCategory">
+      <option [value]="0"> All Categories</option>
+      @for(cat of categories; track cat.id){
+        <option [value]="cat.id">{{cat.name}}</option>
+      }
+    </select>
+  </div>
+<!-- <div class="row row-cols-1 row-cols-md-3 g-4 m-5">
+    @for(c of courses;track c.id){
+    @if(selectedCategory == 0 || c.catId==selectedCategory ){
+    <div class="col">
+        <div class="card" [ngClass]="{'text-danger':c.seats==0}">
+            <img [src]="c.Image" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title" [class]="classes">{{c.title}}</h5>
+                <p class="card-text">instructor 's name: {{c.instructor}}</p>
+                @if(c.seats==0){
+                <p class="card-text"> Course Full</p>
+                }
+                @else if(c.seats <= 2){<p class="card-text">number of seats Almost Full: {{c.seats}}</p>}
+                    @else{<p class="card-text">number of seats: {{c.seats}}</p>}
+                    <p class="card-text">price is: {{c. price}}</p>
+                    <button (click)="register(c)" [disabled]="c.seats==0">Register</button>
+
+            </div>
+        </div>
+    </div>
+    }}
+</div> -->
+
+<div class="row row-cols-1 row-cols-md-3 g-4 mx-3">
+  @for(c of courses; track c.id){
+    @if(selectedCategory == 0 || c.catId == selectedCategory){
+      <div class="col">
+        <div class="card h-100 shadow-sm" >
+          <img [src]="c.Image" class="card-img-top" alt="...">
+          
+          <div class="card-body">
+            <h5 class="card-title fw-bold">{{c.title}}</h5>
+            <p class="text-muted mb-1">instructor's name: {{c.instructor}}</p>
+            <p class="fw-bold text-success mb-1">price: ${{c.price}}</p>
+
+            @if(c.seats==0){
+              <span class="badge bg-danger">Course Full</span>
+            } @else if(c.seats <= 2){
+              <span class="badge bg-warning text-dark">⚠️ Almost Full: {{c.seats}} seats</span>
+            } @else {
+              <span class="badge bg-success">✅ {{c.seats}} seats available</span>
+            }
+          </div>
+
+          <div class="card-footer bg-white border-0 pb-3">
+            <button 
+              class="btn w-100" 
+              [class]="c.seats==0 ? 'btn-outline-danger' : 'btn-primary'"
+              (click)="register(c)" 
+              [disabled]="c.seats==0">
+              {{ c.seats==0 ? 'Not Available' : 'Register Now' }}
+            </button>
+          </div>
+
+        </div>
+      </div>
+    }
+  }
+</div>
+</div>
