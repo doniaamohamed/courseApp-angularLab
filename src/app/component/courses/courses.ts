@@ -1,17 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges  } from '@angular/core';
 import { Course } from '../../models/course';
 import{Category} from '../../models/category'
 import { FormsModule } from '@angular/forms';
 import { NgClass } from '@angular/common';
+import{DiscountPipe} from '../../pipes/discount-pipe'
+import{ AppDisableAfterClick  } from '../../directives/app-disable-after-click'
 @Component({
   selector: 'app-courses',
-  imports: [FormsModule,NgClass],
+  imports: [FormsModule,NgClass,DiscountPipe, AppDisableAfterClick ],
   templateUrl: './courses.html',
   styleUrl: './courses.css',
 })
 export class Courses {
+   @Input('sentSelectedCatId') recievedCatId: number = 0
+ @Output() onTotalOrderPriceChanged:EventEmitter<number>;
   courses:Course[]
-  categories:Category[]
+   filteredProducts:Course []
+  totalOrderPice: number = 0
+  // categories:Category[]
   selectedCategory:number=0
   classes='text-center bg-secondary'
   constructor(){
@@ -31,9 +37,25 @@ export class Courses {
 
   { id: 10, title: 'Ethical Hacking', instructor: 'Hassan Magdy', price: 599, seats: 2, Image: 'https://placehold.co/300x200?text=Hacking', catId: 5 },
 ];
-this.categories=[{id:1,name:'Programming'},{id:2,name:'Design'},{id:3,name:'Data Science'},{id:4,name:'Mobile'},{id:5,name:'Cyber Security'}];
-  }
+// this.categories=[{id:1,name:'Programming'},{id:2,name:'Design'},{id:3,name:'Data Science'},{id:4,name:'Mobile'},{id:5,name:'Cyber Security'}];
+  this.filteredProducts = this.courses
+    this.onTotalOrderPriceChanged=new EventEmitter<number>()
+}
   register(course: Course) {
   course.seats--;
+   this.totalOrderPice += course.price;
+  this.onTotalOrderPriceChanged.emit(this.totalOrderPice);
 }
+ ngOnChanges(): void {
+    this.filterProductsFun()
+  }
+
+  filterProductsFun() {
+    if (this.recievedCatId == 0) {
+      this.filteredProducts = this.courses
+    } else {
+      this.filteredProducts = this.courses.filter((prd) => prd.catId == this.recievedCatId)
+
+    }
+  }
 }
